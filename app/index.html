@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>WeatherNerdzzz.com</title>
+
+  <!-- Plotly doesn't work with webpack, apparently. -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <link rel="stylesheet" href="styles/main.css">
 
 
@@ -17,6 +20,11 @@
 
     <div>
       <h2>lat/long: {{position.lat}}, {{position.long}}</h2>
+    </div>
+
+    <div>
+      <h2>Forecast:</h2>
+      <div id="plot" style="width: 640px; height 480px"></div>
     </div>
 
   </div>
