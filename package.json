@@ -15,5 +15,24 @@
   "bugs": {
     "url": "https://github.com/mringel/weathernerdz/issues"
   },
-  "homepage": "https://github.com/mringel/weathernerdz#readme"
+  "homepage": "https://github.com/mringel/weathernerdz#readme",
+  "devDependencies": {
+    "angular": "^1.4.8",
+    "angular-mocks": "^1.4.8",
+    "angular-simple-logger": "^0.1.5",
+    "gulp": "^3.9.0",
+    "gulp-concat-css": "^2.2.0",
+    "gulp-mocha": "^2.2.0",
+    "gulp-sass": "^2.1.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.19",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs-launcher": "^0.2.3",
+    "leaflet": "^0.7.7",
+    "mocha": "^2.3.4",
+    "phantomjs": "^1.9.19",
+    "ui-leaflet": "^1.0.0",
+    "webpack-stream": "^3.1.0"
+  }
 }
