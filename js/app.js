@@ -2,6 +2,8 @@ angular.module('myApp', ['nemLogging', 'ui-leaflet'])
   .controller('MyController', ['$scope', 'leafletData',
     function($scope,leafletData) {
 
+      var darkSkyKey = 'ddd77ff3c434ad2c1efc34ede4e8e016';
+
       $scope.position = {};
       leafletData.getMap().then(function(map) {
         map.on('dblclick', function(e) {
