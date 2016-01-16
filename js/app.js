@@ -5,6 +5,7 @@ angular.module('myApp', ['nemLogging', 'ui-leaflet'])
       $scope.position = {};
       leafletData.getMap().then(function(map) {
         map.on('dblclick', function(e) {
+          console.log(e);
           $scope.position.lat = e.latlng.lat;
           $scope.position.long = e.latlng.lng;
         });
@@ -18,8 +19,8 @@ angular.module('myApp', ['nemLogging', 'ui-leaflet'])
         },
 
         defaults: {
-          scrollWheelZoom: false,
-          doubleClickZoom: true,
+          scrollWheelZoom: true,
+          doubleClickZoom: false,
           tap: false,
           tileLayer: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
           maxZoom: 14
