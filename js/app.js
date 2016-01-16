@@ -5,7 +5,6 @@ angular.module('myApp', ['nemLogging', 'ui-leaflet'])
       $scope.position = {};
       leafletData.getMap().then(function(map) {
         map.on('dblclick', function(e) {
-          console.log(e);
           $scope.position.lat = e.latlng.lat;
           $scope.position.long = e.latlng.lng;
         });
