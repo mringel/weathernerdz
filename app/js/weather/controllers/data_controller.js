@@ -21,6 +21,15 @@ module.exports = function(app) {
         map.on('dblclick', function(e) {
           $scope.position.lat = e.latlng.lat;
           $scope.position.long = e.latlng.lng;
+          angular.extend($scope, {
+            markers: {
+              mainMarker: {
+                lat: e.latlng.lat,
+                lng: e.latlng.lng,
+                message: 'Weather Data for this point'
+              }
+            }
+          });
         });
       });
 
@@ -37,6 +46,14 @@ module.exports = function(app) {
           tap: false,
           tileLayer: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
           maxZoom: 14
+        },
+        markers: {
+          mainMarker: {
+            lat: 47.6,
+            lng: -122.33,
+            focus: true,
+            message: 'Weather data at this point'
+          }
         }
       });
     }]);
