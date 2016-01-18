@@ -2,8 +2,6 @@ module.exports = function(app) {
   app.controller('MyController', ['$scope', 'leafletData', '$http',
     function($scope,leafletData, $http) {
 
-      var moment = require('moment');
-
       $scope.inputDate = $scope.inputDate || new Date();
       $scope.position = $scope.position || {lat: 47.6, long: -122.33};
       $scope.weatherData = {};
@@ -28,7 +26,7 @@ module.exports = function(app) {
             + String($scope.position.lat) + ','
             + String($scope.position.long)
             + ','
-            + String(moment($scope.inputDate).format())
+            + String(Date.parse($scope.inputDate)/1000)
             + '?' + 'callback=JSON_CALLBACK';
 
           $http.jsonp(url)
