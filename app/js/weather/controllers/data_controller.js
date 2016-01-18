@@ -15,8 +15,8 @@ module.exports = function(app) {
       plot.plotTemp(sampleData);
       plot.plotHumidity(sampleData);
 
-      var parseResponse = function(response) {
-        console.log(response);
+      var parseResponse = function(data) {
+        console.log(data);
       };
 
       var getWeatherData = function() {
@@ -25,17 +25,12 @@ module.exports = function(app) {
             + String($scope.position.long)
             // + ','
             // + String($scope.inputDate)
-            + '?' + 'callback=parseResponse';
+            + '?' + 'callback=JSON_CALLBACK';
 
-          $http({
-            method: 'GET',
-            url: url
-          }).then(function (res) {
-            console.log(res.data);
-          }, function(err) {
-            console.log(err);
-          });
-
+          $http.jsonp(url)
+            .success(function(data) {
+              console.log(data);
+            });
     };
 
       leafletData.getMap().then(function(map) {
