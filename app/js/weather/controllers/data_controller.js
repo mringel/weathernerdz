@@ -1,22 +1,43 @@
 module.exports = function(app) {
-  app.controller('MyController', ['$scope', 'leafletData',
-    function($scope,leafletData) {
+  app.controller('MyController', ['$scope', 'leafletData', '$http',
+    function($scope,leafletData, $http) {
 
       $scope.inputDate = $scope.inputDate || new Date();
+      $scope.position = {};
       var darkSkyKey = 'ddd77ff3c434ad2c1efc34ede4e8e016';
 
       var Plot = require('../../lib/plot');
       var plot = new Plot();
 
       var sampleData = require('../sampledata');
-      // $scope.forecast = sampleData;
+      $scope.data = {};
 
       plot.plotTemp(sampleData);
       plot.plotHumidity(sampleData);
 
+      var parseResponse = function(response) {
+        console.log(response);
+      };
 
+      var getWeatherData = function() {
+    			var url = 'https://api.forecast.io/forecast/' + darkSkyKey + '/'
+            + String($scope.position.lat) + ','
+            + String($scope.position.long)
+            // + ','
+            // + String($scope.inputDate)
+            + '?' + 'callback=parseResponse';
 
-      $scope.position = {};
+          $http({
+            method: 'GET',
+            url: url
+          }).then(function (res) {
+            console.log(res.data);
+          }, function(err) {
+            console.log(err);
+          });
+
+    };
+
       leafletData.getMap().then(function(map) {
         map.on('dblclick', function(e) {
           $scope.position.lat = e.latlng.lat;
@@ -30,6 +51,7 @@ module.exports = function(app) {
               }
             }
           });
+          getWeatherData();
         });
       });
 
