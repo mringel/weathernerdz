@@ -34,11 +34,11 @@ This app was tested in Chrome.
 ### Double-clicks in Leaflet 1.0.0 Beta 2
 I found a bug in leaflet 1.0.0 beta 2 when using chrome on a touch screen.  Mouse double-clicks are not recognized in leaflet when touch is enabled.  See known issue here:
 https://github.com/Leaflet/Leaflet/issues/4127   
-** Workaround: Used Leaflet 0.7.7 **
+**Workaround: Used Leaflet 0.7.7**
 
 ### Plotly doesn't work with webpack.
 The Plotly website insists it works with Webpack despite giving warnings, but I found numerous examples of people having the same issue.  
-** Workaround: load plotly from a src tag in index.html instead of bundling with webpack. **
+**Workaround: load plotly from a src tag in index.html instead of bundling with webpack.**
 
 ### Dark Sky API doesn't allow cross-origin requests
 
