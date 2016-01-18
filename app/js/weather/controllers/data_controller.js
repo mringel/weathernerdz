@@ -1,65 +1,57 @@
 module.exports = function(app) {
-  app.controller('MyController', ['$scope', 'leafletData',
-    function($scope,leafletData) {
+  app.controller('MyController', ['$scope', 'leafletData', '$http',
+    function($scope,leafletData, $http) {
+
+      var moment = require('moment');
+
+      $scope.inputDate = $scope.inputDate || new Date();
+      $scope.position = $scope.position || {lat: 47.6, long: -122.33};
+
+      $scope.updateData = function() {
+        getWeatherData();
+      };
+
+      // API key would normally live in an environment variable on the server
       var darkSkyKey = 'ddd77ff3c434ad2c1efc34ede4e8e016';
 
       var Plot = require('../../lib/plot');
       var plot = new Plot();
 
-      var sampleData = require('../sampledata');
-      // $scope.forecast = sampleData;
+      // sample data so I don't have to ping the API for data every time
+      // var sampleData = require('../sampledata');
+      // plot.plotTemp(sampleData);
+      // plot.plotHumidity(sampleData);
 
-      var time = plot.mapTime(sampleData);
-      var apparentTemperature = plot.mapApparentTemp(sampleData);
-      var humidity = plot.mapField(sampleData, 'humidity');
+      var getWeatherData = function() {
+    			var url = 'https://api.forecast.io/forecast/' + darkSkyKey + '/'
+            + String($scope.position.lat) + ','
+            + String($scope.position.long)
+            + ','
+            + String(moment($scope.inputDate).format())
+            + '?' + 'callback=JSON_CALLBACK';
 
-      var tempPlotData = [
-        {
-          x: time,
-          y: apparentTemperature,
-          name: 'Apparent Temperature',
-          type: 'scatter'
-        }
-      ];
-
-      var tempLayout = {
-        title: 'Apparent Temperature Hourly Forecast',
-        xaxis: {
-          title: 'Date'
-        },
-        yaxis: {
-          title: 'Apparent Temperature'
-        }
+          $http.jsonp(url)
+            .success(function(data) {
+              console.log(data);
+              plot.plotTemp(data);
+              plot.plotHumidity(data);
+            });
       };
 
-      Plotly.newPlot('temp-plot', tempPlotData, tempLayout);
-
-      var humidityPlotData = [
-        {
-          x: time,
-          y: humidity,
-          name: 'Humidity',
-          type: 'scatter'
-        }
-      ];
-
-      var humidityLayout = {
-        title: 'Humidity Hourly Forecast',
-        xaxis: {
-          title: 'Date'
-        },
-        yaxis: {
-          title: 'Humidity'
-        }
-      };
-
-      Plotly.newPlot('humidity-plot', humidityPlotData, humidityLayout);
-
-      $scope.position = {};
       leafletData.getMap().then(function(map) {
         map.on('dblclick', function(e) {
           $scope.position.lat = e.latlng.lat;
           $scope.position.long = e.latlng.lng;
+          angular.extend($scope, {
+            markers: {
+              mainMarker: {
+                lat: e.latlng.lat,
+                lng: e.latlng.lng,
+                message: 'Weather Data for this point'
+              }
+            }
+          });
+          getWeatherData();
         });
       });
 
@@ -76,6 +68,14 @@ module.exports = function(app) {
           tap: false,
           tileLayer: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
           maxZoom: 14
+        },
+        markers: {
+          mainMarker: {
+            lat: 47.6,
+            lng: -122.33,
+            focus: true,
+            message: 'Weather data at this point'
+          }
         }
       });
     }]);

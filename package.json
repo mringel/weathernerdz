@@ -35,5 +35,9 @@
     "phantomjs": "^1.9.19",
     "ui-leaflet": "^1.0.0",
     "webpack-stream": "^3.1.0"
+  },
+  "dependencies": {
+    "express-http-proxy": "^0.6.0",
+    "http-proxy": "^1.12.0"
   }
 }
