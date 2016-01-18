@@ -6,6 +6,7 @@ module.exports = function(app) {
 
       $scope.inputDate = $scope.inputDate || new Date();
       $scope.position = $scope.position || {lat: 47.6, long: -122.33};
+      $scope.weatherData = {};
 
       $scope.updateData = function() {
         getWeatherData();
@@ -32,12 +33,14 @@ module.exports = function(app) {
 
           $http.jsonp(url)
             .success(function(data) {
-              console.log(data);
+              $scope.weatherData = data;
               plot.plotTemp(data);
               plot.plotHumidity(data);
             });
       };
 
+      // on doubleclick on the map, get the lat/long, set a marker, and
+      // call the dark sky api to get weather data for that date and time
       leafletData.getMap().then(function(map) {
         map.on('dblclick', function(e) {
           $scope.position.lat = e.latlng.lat;
@@ -55,6 +58,7 @@ module.exports = function(app) {
         });
       });
 
+      // defaults for map.  Loads on Seattle with a marker.
       angular.extend($scope, {
         seattle: {
           lat: 47.6,
