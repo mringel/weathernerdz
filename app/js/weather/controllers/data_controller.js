@@ -2,36 +2,41 @@ module.exports = function(app) {
   app.controller('MyController', ['$scope', 'leafletData', '$http',
     function($scope,leafletData, $http) {
 
+      var moment = require('moment');
+
       $scope.inputDate = $scope.inputDate || new Date();
-      $scope.position = {};
+      $scope.position = $scope.position || {lat: 47.6, long: -122.33};
+
+      $scope.updateData = function() {
+        getWeatherData();
+      };
+
+      // API key would normally live in an environment variable on the server
       var darkSkyKey = 'ddd77ff3c434ad2c1efc34ede4e8e016';
 
       var Plot = require('../../lib/plot');
       var plot = new Plot();
 
-      var sampleData = require('../sampledata');
-      $scope.data = {};
-
-      plot.plotTemp(sampleData);
-      plot.plotHumidity(sampleData);
-
-      var parseResponse = function(data) {
-        console.log(data);
-      };
+      // sample data so I don't have to ping the API for data every time
+      // var sampleData = require('../sampledata');
+      // plot.plotTemp(sampleData);
+      // plot.plotHumidity(sampleData);
 
       var getWeatherData = function() {
     			var url = 'https://api.forecast.io/forecast/' + darkSkyKey + '/'
             + String($scope.position.lat) + ','
             + String($scope.position.long)
-            // + ','
-            // + String($scope.inputDate)
+            + ','
+            + String(moment($scope.inputDate).format())
             + '?' + 'callback=JSON_CALLBACK';
 
           $http.jsonp(url)
             .success(function(data) {
               console.log(data);
+              plot.plotTemp(data);
+              plot.plotHumidity(data);
             });
-    };
+      };
 
       leafletData.getMap().then(function(map) {
         map.on('dblclick', function(e) {
