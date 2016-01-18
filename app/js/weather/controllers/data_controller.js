@@ -3,26 +3,57 @@ module.exports = function(app) {
     function($scope,leafletData) {
       var darkSkyKey = 'ddd77ff3c434ad2c1efc34ede4e8e016';
 
+      var Plot = require('../../lib/plot');
+      var plot = new Plot();
+
       var sampleData = require('../sampledata');
-      $scope.forecast = sampleData;
+      // $scope.forecast = sampleData;
 
-      var time = sampleData.hourly.data.map(function(obj) {
-        return obj.time;
-      });
+      var time = plot.mapTime(sampleData);
+      var apparentTemperature = plot.mapApparentTemp(sampleData);
+      var humidity = plot.mapField(sampleData, 'humidity');
 
-      var apparentTemperature = sampleData.hourly.data.map(function(obj) {
-        return obj.apparentTemperature;
-      });
-
-      var plotData = [
+      var tempPlotData = [
         {
           x: time,
           y: apparentTemperature,
+          name: 'Apparent Temperature',
           type: 'scatter'
         }
       ];
 
-      Plotly.newPlot('plot', plotData);
+      var tempLayout = {
+        title: 'Apparent Temperature Hourly Forecast',
+        xaxis: {
+          title: 'Date'
+        },
+        yaxis: {
+          title: 'Apparent Temperature'
+        }
+      };
+
+      Plotly.newPlot('temp-plot', tempPlotData, tempLayout);
+
+      var humidityPlotData = [
+        {
+          x: time,
+          y: humidity,
+          name: 'Humidity',
+          type: 'scatter'
+        }
+      ];
+
+      var humidityLayout = {
+        title: 'Humidity Hourly Forecast',
+        xaxis: {
+          title: 'Date'
+        },
+        yaxis: {
+          title: 'Humidity'
+        }
+      };
+
+      Plotly.newPlot('humidity-plot', humidityPlotData, humidityLayout);
 
       $scope.position = {};
       leafletData.getMap().then(function(map) {
