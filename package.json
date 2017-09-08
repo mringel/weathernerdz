@@ -36,5 +36,7 @@
     "ui-leaflet": "^1.0.0",
     "webpack-stream": "^3.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "express": "^4.15.4"
+  }
 }
